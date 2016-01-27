@@ -1,18 +1,18 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MIT/X11 License
- * 
+ *
  * Copyright (c) 2010 Erik Vold
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -43,17 +43,17 @@ var l10n = (function(global) {
 
   function l10n(addon, filename, defaultLocale) {
     defaultLocale = defaultLocale || "en";
-    function filepath(locale) addon
-        .getResourceURI("locale/" + locale + "/" + filename).spec
+    function filepath(locale) {
+      return addon.getResourceURI("locale/" + locale + "/" + filename).spec;
+    }
 
     let defaultBundle = Services.strings.createBundle(filepath(locale));
 
     let defaultBasicBundle;
-    let (locale_base = locale.match(splitter)) {
-      if (locale_base) {
-        defaultBasicBundle = Services.strings.createBundle(
-            filepath(locale_base[1]));
-      }
+    let locale_base = locale.match(splitter);
+    if (locale_base) {
+      defaultBasicBundle = Services.strings.createBundle(
+          filepath(locale_base[1]));
     }
 
     let addonsDefaultBundle =
@@ -75,7 +75,7 @@ var l10n = (function(global) {
           || getStr(defaultBundle, aKey)
           || getStr(defaultBasicBundle, aKey)
           || getStr(addonsDefaultBundle, aKey);
-    }
+    };
   }
 
   l10n.unload = Services.strings.flushBundles;

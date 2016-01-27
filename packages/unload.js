@@ -60,7 +60,9 @@ exports.unload = function unload(callback, container) {
 
   // Calling with no arguments runs all the unloader callbacks
   if (callback == null) {
-    unloaders.slice().forEach(function(unloader) unloader());
+    unloaders.slice().forEach(function(unloader) {
+      return unloader();
+    });
     unloaders.length = 0;
     return;
   }
@@ -76,7 +78,7 @@ exports.unload = function unload(callback, container) {
       container.removeEventListener("unload", unloader, false);
       removeUnloader();
       origCallback();
-    }
+    };
   }
 
   // Wrap the callback in a function that ignores failures
@@ -95,4 +97,4 @@ exports.unload = function unload(callback, container) {
       unloaders.splice(index, 1);
   }
   return removeUnloader;
-}
+};

@@ -1,18 +1,18 @@
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MIT/X11 License
- * 
+ *
  * Copyright (c) 2010 Erik Vold
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -57,16 +57,20 @@ const PREFS = {
   "disable_fastload": false,
   toolbar: "",
   "toolbar.before": "",
-  get key() _("restart.ak", getPref("locale"))
+  get key() {
+    return _("restart.ak", getPref("locale"));
+  }
 };
 
 var prefChgHandlers = [];
 let PREF_OBSERVER = {
   observe: function(aSubject, aTopic, aData) {
     if ("nsPref:changed" != aTopic || !(aData in PREFS)) return;
-    prefChgHandlers.forEach(function(func) func && func(aData));
+    prefChgHandlers.forEach(function(func) {
+      return func && func(aData);
+    });
   }
-}
+};
 
 let logo = "";
 
@@ -76,16 +80,18 @@ let logo = "";
 * @param src (String)
 * The url of a javascript file to include.
 */
-(function(global) global.include = function include(src) {
-  var o = {};
-  Components.utils.import("resource://gre/modules/Services.jsm", o);
-  var uri = o.Services.io.newURI(
-      src, null, o.Services.io.newURI(__SCRIPT_URI_SPEC__, null, null));
-  o.Services.scriptloader.loadSubScript(uri.spec, global);
+(function(global) {
+  global.include = function include(src) {
+    var o = {};
+    Components.utils.import("resource://gre/modules/Services.jsm", o);
+    var uri = o.Services.io.newURI(
+        src, null, o.Services.io.newURI(__SCRIPT_URI_SPEC__, null, null));
+    o.Services.scriptloader.loadSubScript(uri.spec, global);
+  };
 })(this);
 
 /* Imports a commonjs style javascript file with loadSubScrpt
- * 
+ *
  * @param src (String)
  * The url of a javascript file.
  */
@@ -106,7 +112,7 @@ let logo = "";
       tools.Services.scriptloader.loadSubScript(uri.spec, scope);
     }
     return modules[src] = scope.exports;
-  }
+  };
 })(this);
 
 
@@ -130,7 +136,9 @@ function setPref(aKey, aVal) {
 }
 
 function addMenuItem(win) {
-  var $ = function(id) win.document.getElementById(id);
+  var $ = function(id) {
+    return win.document.getElementById(id);
+  }
 
   function removeMI() {
     var menuitem = $(fileMenuitemID);
@@ -139,17 +147,16 @@ function addMenuItem(win) {
   removeMI();
 
   // add the new menuitem to File menu
-  let (restartMI = win.document.createElementNS(NS_XUL, "menuitem")) {
-    restartMI.setAttribute("id", fileMenuitemID);
-    restartMI.setAttribute("class", "menuitem-iconic");
-    restartMI.setAttribute("label", _("restart", getPref("locale")));
-    restartMI.setAttribute("accesskey", "R");
-    restartMI.setAttribute("key", keyID);
-    restartMI.style.listStyleImage = "url('" + logo + "')";
-    restartMI.addEventListener("command", restart, true);
+  let restartMI = win.document.createElementNS(NS_XUL, "menuitem");
+  restartMI.setAttribute("id", fileMenuitemID);
+  restartMI.setAttribute("class", "menuitem-iconic");
+  restartMI.setAttribute("label", _("restart", getPref("locale")));
+  restartMI.setAttribute("accesskey", "R");
+  restartMI.setAttribute("key", keyID);
+  restartMI.style.listStyleImage = "url('" + logo + "')";
+  restartMI.addEventListener("command", restart, true);
 
-    $("menu_FilePopup").insertBefore(restartMI, $("menu_FileQuitItem"));
-  }
+  $("menu_FilePopup").insertBefore(restartMI, $("menu_FileQuitItem"));
 
   unload(removeMI, win);
 }
@@ -174,21 +181,25 @@ function restart() {
 
 function main(win) {
   let doc = win.document;
-  function $(id) doc.getElementById(id);
-  function xul(type) doc.createElementNS(NS_XUL, type);
+  function $(id) {
+    return doc.getElementById(id);
+  }
+  function xul(type) {
+    return doc.createElementNS(NS_XUL, type);
+  }
 
   let rrKeyset = xul("keyset");
   rrKeyset.setAttribute("id", keysetID);
 
   // add hotkey
-  let (restartKey = xul("key")) {
-    restartKey.setAttribute("id", keyID);
-    restartKey.setAttribute("key", getPref("key"));
-    restartKey.setAttribute("modifiers", getPref("modifiers"));
-    restartKey.setAttribute("oncommand", "void(0);");
-    restartKey.addEventListener("command", restart, true);
-    $(XUL_APP.baseKeyset).parentNode.appendChild(rrKeyset).appendChild(restartKey);
-  }
+  let restartKey = xul("key");
+  restartKey.setAttribute("id", keyID);
+  restartKey.setAttribute("key", getPref("key"));
+  restartKey.setAttribute("modifiers", getPref("modifiers"));
+  restartKey.setAttribute("oncommand", "void(0);");
+  restartKey.addEventListener("command", restart, true);
+  $(XUL_APP.baseKeyset).parentNode.appendChild(rrKeyset).appendChild(restartKey);
+
 
   // add menu bar item to File menu
   addMenuItem(win);
@@ -266,10 +277,12 @@ function main(win) {
 }
 
 var addon = {
-  getResourceURI: function(filePath) ({
-    spec: __SCRIPT_URI_SPEC__ + "/../" + filePath
-  })
-}
+  getResourceURI: function(filePath) {
+    return ({
+      spec: __SCRIPT_URI_SPEC__ + "/../" + filePath
+    });
+  }
+};
 
 function disable(id) {
   Cu.import("resource://gre/modules/AddonManager.jsm");
@@ -301,6 +314,10 @@ function startup(data, reason) {
   watchWindows(main, XUL_APP.winType);
   prefs = prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
   prefs.addObserver("", PREF_OBSERVER, false);
-  unload(function() prefs.removeObserver("", PREF_OBSERVER));
+  unload(function() {
+    return prefs.removeObserver("", PREF_OBSERVER);
+  });
 };
-function shutdown(data, reason) unload()
+function shutdown(data, reason) {
+  return unload()
+}
