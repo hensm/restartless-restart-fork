@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
 <r:RDF xmlns="http://www.mozilla.org/2004/em-rdf#" xmlns:r="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <r:Description about="urn:mozilla:install-manifest">
-    <creator>Erik Vold</creator>
-    <id>restartless.restart@erikvold.com</id>
-    <name>Restartless Restart</name>
-    <version>9.1-signed</version>
+    <creator>Erik Vold, Marcii &lt;marcii&#64;cssu.in&gt; (fork)</creator>
+    <id>restartless.restart@cssu.in</id>
+    <name>Restartless Restart Fork</name>
+    <version>9.2</version>
     <bootstrap>true</bootstrap>
     <type>2</type>
-    <homepageURL>http://github.com/erikvold/restartless-restart-ffext</homepageURL>
+    <homepageURL>https://github.com/marcii/restartless-restart-fork</homepageURL>
     <description>Fennec users enable to restart, otherwise a File -&gt; Restart menu item will be added.</description>
     <optionsType>2</optionsType>
 
